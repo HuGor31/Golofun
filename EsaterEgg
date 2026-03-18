@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Easter Egg Gologic</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --panel: #161b22;
+      --panel-2: #1f2630;
+      --border: #30363d;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --green: #3fb950;
+      --blue: #58a6ff;
+      --yellow: #d29922;
+      --red: #f85149;
+      --purple: #bc8cff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      background: linear-gradient(180deg, #0d1117 0%, #111827 100%);
+      color: var(--text);
+      padding: 24px;
+    }
+
+    .container {
+      max-width: 920px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      background: rgba(22, 27, 34, 0.96);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+      margin-bottom: 22px;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 12px;
+      color: var(--blue);
+      background: rgba(88, 166, 255, 0.08);
+      border: 1px solid rgba(88, 166, 255, 0.25);
+      padding: 6px 10px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: 34px;
+      line-height: 1.15;
+    }
+
+    .lead {
+      margin: 0;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.6;
+    }
+
+    .terminal {
+      margin-top: 24px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      background: #0b0f14;
+    }
+
+    .terminal-top {
+      background: #161b22;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 14px;
+    }
+
+    .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+    }
+
+    .dot.red { background: #ff5f56; }
+    .dot.yellow { background: #ffbd2e; }
+    .dot.green { background: #27c93f; }
+
+    .terminal-title {
+      margin-left: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    .terminal-body {
+      padding: 18px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 14px;
+      line-height: 1.7;
+      color: #c9d1d9;
+      white-space: pre-wrap;
+    }
+
+    .prompt { color: var(--green); }
+    .cmd { color: var(--blue); }
+    .out { color: #c9d1d9; }
+    .warn { color: var(--yellow); }
+    .accent { color: var(--purple); }
+
+    .quiz {
+      margin-top: 22px;
+      background: rgba(22, 27, 34, 0.96);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.25);
+    }
+
+    .quiz h2 {
+      margin: 0 0 8px;
+      font-size: 26px;
+    }
+
+    .quiz-intro {
+      margin: 0 0 24px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .question {
+      border: 1px solid var(--border);
+      background: var(--panel);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    .question-title {
+      font-weight: 700;
+      font-size: 16px;
+      margin-bottom: 14px;
+    }
+
+    .option {
+      display: block;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: 0.2s ease;
+      color: var(--text);
+    }
+
+    .option:hover {
+      background: var(--panel-2);
+      border-color: var(--border);
+    }
+
+    .option input {
+      margin-right: 10px;
+      transform: translateY(1px);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .primary {
+      background: var(--blue);
+      color: white;
+    }
+
+    .primary:hover {
+      filter: brightness(1.05);
+    }
+
+    .secondary {
+      background: #21262d;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .secondary:hover {
+      background: #262c36;
+    }
+
+    .result {
+      margin-top: 24px;
+      padding: 20px;
+      border-radius: 16px;
+      display: none;
+      border: 1px solid var(--border);
+      background: #11161d;
+    }
+
+    .result h3 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 22px;
+    }
+
+    .success {
+      border-color: rgba(63, 185, 80, 0.35);
+      background: rgba(63, 185, 80, 0.08);
+    }
+
+    .fail {
+      border-color: rgba(248, 81, 73, 0.35);
+      background: rgba(248, 81, 73, 0.08);
+    }
+
+    .score {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .small {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .footer-cta {
+      margin-top: 18px;
+    }
+
+    .footer-cta a {
+      display: inline-block;
+      text-decoration: none;
+      color: white;
+      background: var(--green);
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-weight: 700;
+    }
+
+    .footer-cta a:hover {
+      filter: brightness(1.05);
+    }
+
+    .tiny {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 700px) {
+      body {
+        padding: 14px;
+      }
+
+      .hero, .quiz {
+        padding: 18px;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="hero">
+      <div class="badge">Easter egg trouvé ✅</div>
+      <h1>Bravo, tu as trouvé le contenu caché.</h1>
+      <p class="lead">
+        Clairement, on parle à quelqu’un qui lit les détails, clique sur les trucs louches mais élégants,
+        et a probablement déjà debug une pipeline à 17h un vendredi.
+      </p>
+
+      <div class="terminal">
+        <div class="terminal-top">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+          <span class="terminal-title">github-actions / easter-egg / runner-01</span>
+        </div>
+        <div class="terminal-body"><span class="prompt">runner@github</span>:<span class="accent">~/work/easter-egg</span>$ <span class="cmd">cat mission.txt</span>
+<span class="out">Mission: verify geek level of visitor</span>
+<span class="out">Rules: 3 good answers = beer or coffee unlocked</span>
+
+<span class="prompt">runner@github</span>:<span class="accent">~/work/easter-egg</span>$ <span class="cmd">git status</span>
+<span class="out">On branch main</span>
+<span class="out">Your infra is ahead of chaos by 1 commit.</span>
+
+<span class="prompt">runner@github</span>:<span class="accent">~/work/easter-egg</span>$ <span class="cmd">./run_quiz.sh</span>
+<span class="warn">Warning:</span> <span class="out">Kubernetes jokes may be deployed without approval.</span>
+<span class="out">Starting quiz...</span></div>
+      </div>
+    </section>
+
+    <section class="quiz">
+      <h2>Mini quiz DevOps / Infra / Geek</h2>
+      <p class="quiz-intro">
+        Coche la meilleure réponse pour chaque question. Ce quiz n’a aucune valeur scientifique,
+        mais il permet d’évaluer ta compatibilité avec les gens qui disent “ça marche en staging”.
+      </p>
+
+      <form id="quizForm">
+        <div class="question">
+          <div class="question-title">1. Quel est le vrai sens de “ça marche sur ma machine” ?</div>
+          <label class="option"><input type="radio" name="q1" value="0"> Le bug est résolu universellement.</label>
+          <label class="option"><input type="radio" name="q1" value="1"> Le problème a été déplacé avec élégance vers un autre environnement.</label>
+          <label class="option"><input type="radio" name="q1" value="0"> La production est forcément alignée avec mon laptop.</label>
+          <label class="option"><input type="radio" name="q1" value="0"> C’est une certification cloud peu connue.</label>
+        </div>
+
+        <div class="question">
+          <div class="question-title">2. Le meilleur moment pour déployer un changement non testé en prod est :</div>
+          <label class="option"><input type="radio" name="q2" value="0"> Le vendredi à 16h58.</label>
+          <label class="option"><input type="radio" name="q2" value="1"> Jamais, sauf si tu aimes les appels Teams de crise.</label>
+          <label class="option"><input type="radio" name="q2" value="0"> Pendant le lunch de toute l’équipe plateforme.</label>
+          <label class="option"><input type="radio" name="q2" value="0"> Juste avant de partir en vacances.</label>
+        </div>
+
+        <div class="question">
+          <div class="question-title">3. Que fait réellement Terraform ?</div>
+          <label class="option"><input type="radio" name="q3" value="0"> Il soigne les relations entre développeurs et réseau.</label>
+          <label class="option"><input type="radio" name="q3" value="1"> Il permet de décrire l’infrastructure en code, puis d’automatiser sa création et son évolution.</label>
+          <label class="option"><input type="radio" name="q3" value="0"> Il remplace automatiquement tous les comités de gouvernance.</label>
+          <label class="option"><input type="radio" name="q3" value="0"> Il convertit les incidents P1 en P4.</label>
+        </div>
+
+        <div class="question">
+          <div class="question-title">4. Dans Kubernetes, quand un pod “CrashLoopBackOff”, la réaction standard est :</div>
+          <label class="option"><input type="radio" name="q4" value="0"> Dire que c’est sûrement un problème de branding.</label>
+          <label class="option"><input type="radio" name="q4" value="0"> Relancer ton laptop pour voir.</label>
+          <label class="option"><input type="radio" name="q4" value="1"> Aller lire les logs, vérifier la config, l’image, les secrets et les dépendances.</label>
+          <label class="option"><input type="radio" name="q4" value="0"> Ajouter plus de dashboards jusqu’à ce que le bug se sente observé.</label>
+        </div>
+
+        <div class="question">
+          <div class="question-title">5. Une bonne pipeline CI/CD sert surtout à :</div>
+          <label class="option"><input type="radio" name="q5" value="0"> Donner l’impression que tout est automatisé.</label>
+          <label class="option"><input type="radio" name="q5" value="0"> Générer des logs très longs pour décourager les curieux.</label>
+          <label class="option"><input type="radio" name="q5" value="1"> Fiabiliser, tester, sécuriser et accélérer la livraison.</label>
+          <label class="option"><input type="radio" name="q5" value="0"> Remplacer totalement les développeurs seniors.</label>
+        </div>
+
+        <div class="question">
+          <div class="question-title">6. Le plus grand pouvoir d’un ingénieur infra expérimenté est :</div>
+          <label class="option"><input type="radio" name="q6" value="0"> Redémarrer un service avec beaucoup d’assurance.</label>
+          <label class="option"><input type="radio" name="q6" value="1"> Réduire le chaos avant qu’il n’apparaisse, avec observabilité, automatisation et standards.</label>
+          <label class="option"><input type="radio" name="q6" value="0"> Savoir ouvrir 47 onglets Grafana en même temps.</label>
+          <label class="option"><input type="radio" name="q6" value="0"> Prononcer “Kubernetes” différemment à chaque réunion.</label>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="primary" onclick="calculateScore()">Voir mon score</button>
+          <button type="reset" class="secondary" onclick="resetQuiz()">Recommencer</button>
+        </div>
+      </form>
+
+      <div id="result" class="result">
+        <h3 id="resultTitle"></h3>
+        <div id="scoreText" class="score"></div>
+        <p id="resultMessage"></p>
+        <div id="resultExtra" class="small"></div>
+        <div id="cta" class="footer-cta" style="display:none;">
+          <a href="https://meetings.hubspot.com/hugo-robine?uuid=3cacd767-7481-4c85-83c8-ac70b1f6e099" target="_blank">
+            Réclamer ma bière ou mon café
+          </a>
+        </div>
+        <div class="tiny">
+          Aucune bière n’a été provisionnée via Terraform à ce stade.
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    function calculateScore() {
+      const form = document.getElementById("quizForm");
+      const result = document.getElementById("result");
+      const title = document.getElementById("resultTitle");
+      const scoreText = document.getElementById("scoreText");
+      const message = document.getElementById("resultMessage");
+      const extra = document.getElementById("resultExtra");
+      const cta = document.getElementById("cta");
+
+      const totalQuestions = 6;
+      let answered = 0;
+      let score = 0;
+
+      for (let i = 1; i <= totalQuestions; i++) {
+        const selected = form.querySelector(`input[name="q${i}"]:checked`);
+        if (selected) {
+          answered++;
+          score += Number(selected.value);
+        }
+      }
+
+      if (answered < totalQuestions) {
+        result.style.display = "block";
+        result.className = "result fail";
+        title.textContent = "Quiz incomplet 👀";
+        scoreText.textContent = `Tu as répondu à ${answered} question(s) sur ${totalQuestions}.`;
+        message.textContent = "Même en infra, on évite les déploiements partiels non intentionnels. Réponds à tout et relance le pipeline.";
+        extra.textContent = "Indice : lis toutes les réponses, le vrai danger est souvent celui qui a l’air le plus confiant.";
+        cta.style.display = "none";
+        result.scrollIntoView({ behavior: "smooth", block: "start" });
+        return;
+      }
+
+      result.style.display = "block";
+
+      if (score >= 3) {
+        result.className = "result success";
+        title.textContent = "Bravo, accès café / bière débloqué 🍻☕";
+        scoreText.textContent = `Score : ${score}/${totalQuestions}`;
+        message.textContent = "Tu as officiellement passé le filtre geek / DevOps / infra. À ce niveau-là, je paye une bière ou un café ;)";
+        extra.innerHTML = "Tu peux maintenant prendre rendez-vous et mentionner que tu as trouvé l’easter egg. Respect immédiat, et probablement une discussion sur l’IA, les pipelines, le platform engineering ou pourquoi personne ne devrait déployer le vendredi.";
+        cta.style.display = "block";
+      } else {
+        result.className = "result fail";
+        title.textContent = "Pas loin, mais la prod reste protégée 🛡️";
+        scoreText.textContent = `Score : ${score}/${totalQuestions}`;
+        message.textContent = "Il y a du potentiel, mais on sent encore un peu de confiance excessive envers les déploiements tardifs et les logs jamais lus.";
+        extra.innerHTML = "Bonne nouvelle : tu peux recommencer. Comme en DevOps, l’important c’est le feedback loop rapide, pas le blame.";
+        cta.style.display = "none";
+      }
+
+      result.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function resetQuiz() {
+      const result = document.getElementById("result");
+      result.style.display = "none";
+    }
+  </script>
+</body>
+</html>
